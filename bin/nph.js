@@ -1,36 +1,44 @@
 #!/usr/bin/env node
 
-const { Command } = require('commander');
-const NPH = require('../lib/index.js');
+import { Command } from 'commander';
+import { displayScripts, addScript, removeScripts, editScript } from '../lib/commands/script.js';
+import { depCommand } from '../lib/commands/dep.js';
 
 const program = new Command();
 
-// Configure the main command
 program
   .name('nph')
-  .description('Node Package Helper - Manage package.json scripts and dependencies')
+  .description('Node Package Helper CLI')
   .version('1.0.0');
 
-// Add the script subcommands
-program
+const scriptCmd = program
   .command('script')
-  .description('Manage package.json scripts')
-  .addCommand(require('./commands/script.js'));
+  .description('Display and manage package.json scripts');
 
-// Add the dependency command
+scriptCmd
+  .command('add')
+  .description('Add a new script interactively')
+  .action(addScript);
+
+scriptCmd
+  .command('rm')
+  .description('Remove scripts interactively')
+  .action(removeScripts);
+
+scriptCmd
+  .command('edit')
+  .description('Edit a script interactively')
+  .action(editScript);
+
+scriptCmd
+  .action(displayScripts);
+
 program
   .command('dep')
-  .description('Verify dependencies')
-  .option('--fix-all', 'Fix all dependency issues')
+  .description('Verify dependencies against npm registry')
+  .option('--fix-all', 'Fix all issues automatically')
   .option('--fix-version', 'Fix version issues only')
   .option('--fix-name', 'Fix package name issues only')
-  .action((options) => {
-    const nph = new NPH();
-    nph.verifyDependencies(options).catch(err => {
-      console.error(`Error: ${err.message}`);
-      process.exit(1);
-    });
-  });
+  .action(depCommand);
 
-// Parse command line arguments
-program.parse(process.argv);
+program.parse();
