@@ -1,0 +1,24 @@
+{
+  "name": "node-package-helper",
+  "version": "1.0.0",
+  "description": "A CLI tool for managing Node.js package.json scripts and dependencies",
+  "main": "lib/index.js",
+  "bin": {
+    "nph": "./bin/nph.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cli",
+    "package",
+    "scripts",
+    "npm",
+    "helper"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.0.0"
+  }
+}
